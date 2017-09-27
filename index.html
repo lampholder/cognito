@@ -1,0 +1,47 @@
+<script type="text/javascript"  src="dist/aws-cognito-sdk.min.js"></script>
+<script type="text/javascript"  src="dist/amazon-cognito-identity.min.js"></script>
+<script type="text/javascript"  src="dist/aws-sdk.js"></script>
+<script type="text/javascript">
+
+AWSCognito.config.region = 'us-east-1';
+
+var poolData = {
+    UserPoolId: 'eu-west-1_u8QFABGZS',
+    ClientId: '5n0rp02bbgmju0s6poecumc87c'
+};
+var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+
+var attributeList = [];
+
+var dataEmail = {
+    Name: 'email',
+    Value: 'lampholder@gmail.com' // your email here
+};
+var dataPhoneNumber = {
+    Name: 'phone_number',
+    Value: '+447890323419' // your phone number here with +country code and no delimiters in front
+};
+var dataGivenName = {
+    Name: 'given_name',
+    Value: 'Erik'
+};
+
+var attributeEmail = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataEmail);
+var attributePhoneNumber = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataPhoneNumber);
+var attributeGivenName = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserAttribute(dataGivenName);
+
+attributeList.push(attributeEmail);
+attributeList.push(attributePhoneNumber);
+attributeList.push(attributeGivenName);
+
+var cognitoUser;
+userPool.signUp('lampholder', 'bananaMan!1977', attributeList, null, function(err, result){
+    if (err) {
+        alert(err);
+        return;
+    }
+    cognitoUser = result.user;
+    console.log('user name is ' + cognitoUser.getUsername());
+});
+
+</script>
