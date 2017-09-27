@@ -1,0 +1,28 @@
+<script type="text/javascript"  src="dist/aws-cognito-sdk.min.js"></script>
+<script type="text/javascript"  src="dist/amazon-cognito-identity.min.js"></script>
+<script type="text/javascript"  src="dist/aws-sdk.js"></script>
+<script type="text/javascript">
+
+AWSCognito.config.region = 'us-east-1';
+
+var poolData = {
+    UserPoolId: 'eu-west-1_u8QFABGZS',
+    ClientId: '5n0rp02bbgmju0s6poecumc87c'
+};
+var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+
+var userData = {
+    Username: 'lampholder',
+    Pool: userPool
+};
+
+var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+cognitoUser.confirmRegistration('220319', true, function(err, result) {
+    if (err) {
+        alert(err);
+        return;
+    }
+    console.log('call result: ' + result);
+});
+
+</script>
