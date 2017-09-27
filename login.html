@@ -1,0 +1,40 @@
+<script type="text/javascript"  src="dist/aws-cognito-sdk.min.js"></script>
+<script type="text/javascript"  src="dist/amazon-cognito-identity.min.js"></script>
+<script type="text/javascript"  src="dist/aws-sdk.js"></script>
+<script type="text/javascript">
+
+AWSCognito.config.region = 'us-east-1';
+
+var poolData = {
+    UserPoolId: 'eu-west-1_u8QFABGZS',
+    ClientId: '5n0rp02bbgmju0s6poecumc87c'
+};
+var userPool = new AWSCognito.CognitoIdentityServiceProvider.CognitoUserPool(poolData);
+
+var userData = {
+    Username : 'lampholder', // your username here
+    Pool : userPool
+};
+
+var authenticationData = {
+    Username : 'lampholder', // your username here
+    Password : 'bananaMan!1977' // your password here
+};
+var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
+
+var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
+cognitoUser.authenticateUser(authenticationDetails, {
+    onSuccess: function (result) {
+        console.log('access token + ' + result.getAccessToken().getJwtToken());
+    },
+
+    onFailure: function(err) {
+        alert(err);
+    },
+    mfaRequired: function(codeDeliveryDetails) {
+        var verificationCode = prompt('Please input verification code' ,'');
+        cognitoUser.sendMFACode(verificationCode, this);
+    }
+});
+
+</script>
